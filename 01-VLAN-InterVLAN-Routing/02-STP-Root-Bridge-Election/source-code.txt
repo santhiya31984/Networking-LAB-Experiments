@@ -1,0 +1,129 @@
+========================================================
+EXPERIMENT 2: STP VERIFICATION AND ROOT BRIDGE ELECTION
+========================================================
+
+TOPOLOGY:
+3 Switches connected in a triangle
+
+SW1 ---- SW2
+ |        |
+ |        |
+ +---- SW3
+
+SW1 = Root Bridge
+SW2 = Secondary Root Bridge
+SW3 = Other Switch
+
+--------------------------------------------------------
+SWITCH 1 - ROOT BRIDGE
+--------------------------------------------------------
+
+enable
+configure terminal
+
+hostname SW1
+
+! Enable Rapid PVST+
+spanning-tree mode rapid-pvst
+
+! Configure SW1 as Root Bridge
+spanning-tree vlan 1 root primary
+
+end
+write memory
+
+
+--------------------------------------------------------
+SWITCH 2 - SECONDARY ROOT
+--------------------------------------------------------
+
+enable
+configure terminal
+
+hostname SW2
+
+! Enable Rapid PVST+
+spanning-tree mode rapid-pvst
+
+! Configure SW2 as Secondary Root
+spanning-tree vlan 1 root secondary
+
+end
+write memory
+
+
+--------------------------------------------------------
+SWITCH 3
+--------------------------------------------------------
+
+enable
+configure terminal
+
+hostname SW3
+
+! Enable Rapid PVST+
+spanning-tree mode rapid-pvst
+
+end
+write memory
+
+
+--------------------------------------------------------
+OPTIONAL: CONFIGURE SWITCH PRIORITIES MANUALLY
+--------------------------------------------------------
+
+SW1:
+
+enable
+configure terminal
+
+spanning-tree vlan 1 priority 4096
+
+end
+write memory
+
+
+SW2:
+
+enable
+configure terminal
+
+spanning-tree vlan 1 priority 8192
+
+end
+write memory
+
+
+SW3:
+
+enable
+configure terminal
+
+spanning-tree vlan 1 priority 32768
+
+end
+write memory
+
+
+--------------------------------------------------------
+VERIFICATION COMMANDS
+--------------------------------------------------------
+
+show spanning-tree
+show spanning-tree vlan 1
+show spanning-tree root
+show spanning-tree blockedports
+
+========================================================
+EXPECTED RESULT
+========================================================
+
+SW1 should be elected as the Root Bridge.
+
+The redundant path between switches should be placed
+into a non-forwarding/blocking state by STP to prevent
+Layer 2 loops.
+
+========================================================
+END OF EXPERIMENT 2
+========================================================
