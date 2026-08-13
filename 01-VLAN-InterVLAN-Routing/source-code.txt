@@ -1,0 +1,121 @@
+========================================================
+EXPERIMENT 1: VLAN CONFIGURATION AND INTER-VLAN ROUTING
+========================================================
+
+TOPOLOGY:
+1 Router
+1 Switch
+4 PCs
+
+VLAN 10: SALES
+VLAN 20: IT
+
+--------------------------------------------------------
+SWITCH CONFIGURATION
+--------------------------------------------------------
+
+enable
+configure terminal
+
+hostname SW1
+
+! Create VLAN 10
+vlan 10
+name STUDENTS
+exit
+
+! Create VLAN 20
+vlan 20
+name FACULTY
+exit
+
+! Configure ports for VLAN 10
+interface range fastEthernet 0/1-2
+switchport mode access
+switchport access vlan 10
+exit
+
+! Configure ports for VLAN 20
+interface range fastEthernet 0/3-4
+switchport mode access
+switchport access vlan 20
+exit
+
+! Configure trunk port to router
+interface gigabitEthernet 0/1
+switchport mode trunk
+exit
+
+end
+write memory
+
+
+--------------------------------------------------------
+ROUTER CONFIGURATION
+--------------------------------------------------------
+
+enable
+configure terminal
+
+hostname R1
+
+! Enable physical interface
+interface gigabitEthernet 0/0
+no shutdown
+exit
+
+! VLAN 10 sub-interface
+interface gigabitEthernet 0/0.10
+encapsulation dot1Q 10
+ip address 192.168.10.1 255.255.255.0
+exit
+
+! VLAN 20 sub-interface
+interface gigabitEthernet 0/0.20
+encapsulation dot1Q 20
+ip address 192.168.20.1 255.255.255.0
+exit
+
+end
+write memory
+
+
+--------------------------------------------------------
+PC IP CONFIGURATION
+--------------------------------------------------------
+
+PC1:
+IP Address: 192.168.10.10
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.10.1
+
+PC2:
+IP Address: 192.168.10.11
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.10.1
+
+PC3:
+IP Address: 192.168.20.10
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.20.1
+
+PC4:
+IP Address: 192.168.20.11
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.20.1
+
+
+--------------------------------------------------------
+VERIFICATION COMMANDS
+--------------------------------------------------------
+
+show vlan brief
+show interfaces trunk
+show ip interface brief
+
+ping 192.168.20.10
+ping 192.168.20.11
+
+========================================================
+END OF EXPERIMENT 1
+========================================================
