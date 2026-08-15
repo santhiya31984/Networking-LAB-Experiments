@@ -1,0 +1,137 @@
+========================================================
+EXPERIMENT 4: IPv6 CONFIGURATION AND SLAAC
+========================================================
+
+TOPOLOGY:
+1 Router
+2 LANs
+Multiple PCs
+
+--------------------------------------------------------
+ROUTER CONFIGURATION
+--------------------------------------------------------
+
+enable
+configure terminal
+
+hostname R1
+
+! Enable IPv6 routing
+ipv6 unicast-routing
+
+
+--------------------------------------------------------
+LAN 1 INTERFACE
+--------------------------------------------------------
+
+interface gigabitEthernet 0/0
+
+ipv6 address 2001:DB8:1:1::1/64
+
+no shutdown
+
+exit
+
+
+--------------------------------------------------------
+LAN 2 INTERFACE
+--------------------------------------------------------
+
+interface gigabitEthernet 0/1
+
+ipv6 address 2001:DB8:1:2::1/64
+
+no shutdown
+
+exit
+
+
+--------------------------------------------------------
+SAVE CONFIGURATION
+--------------------------------------------------------
+
+end
+write memory
+
+
+--------------------------------------------------------
+SLAAC CONFIGURATION
+--------------------------------------------------------
+
+The router automatically sends IPv6 Router
+Advertisement messages.
+
+The PCs should be configured to use:
+
+IPv6 Address:
+AUTO CONFIGURATION
+
+The PCs will automatically generate their IPv6
+addresses using SLAAC.
+
+
+--------------------------------------------------------
+EXPECTED IPv6 NETWORKS
+--------------------------------------------------------
+
+LAN 1:
+
+Prefix:
+2001:DB8:1:1::/64
+
+Router:
+2001:DB8:1:1::1/64
+
+
+LAN 2:
+
+Prefix:
+2001:DB8:1:2::/64
+
+Router:
+2001:DB8:1:2::1/64
+
+
+--------------------------------------------------------
+VERIFICATION COMMANDS
+--------------------------------------------------------
+
+show ipv6 interface brief
+
+show ipv6 interface gigabitEthernet 0/0
+
+show ipv6 interface gigabitEthernet 0/1
+
+show ipv6 neighbors
+
+show ipv6 route
+
+
+--------------------------------------------------------
+PING TEST
+--------------------------------------------------------
+
+From PC:
+
+ping 2001:DB8:1:1::1
+
+From another LAN:
+
+ping 2001:DB8:1:2::1
+
+
+--------------------------------------------------------
+PC VERIFICATION
+--------------------------------------------------------
+
+Use the following command on a PC:
+
+ipconfig
+
+The PC should display an automatically generated
+IPv6 address obtained through SLAAC.
+
+
+========================================================
+END OF EXPERIMENT 4
+========================================================
