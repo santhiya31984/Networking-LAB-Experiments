@@ -1,0 +1,147 @@
+========================================================
+EXPERIMENT 3: IPv4 SUBNETTING AND VLSM DESIGN
+========================================================
+
+BASE NETWORK:
+192.168.10.0/24
+
+REQUIRED NETWORKS:
+
+LAN 1 = 100 Hosts
+LAN 2 = 50 Hosts
+LAN 3 = 25 Hosts
+LAN 4 = 10 Hosts
+
+--------------------------------------------------------
+VLSM CALCULATION
+--------------------------------------------------------
+
+LAN 1
+Required Hosts: 100
+
+Network Address: 192.168.10.0/25
+Subnet Mask: 255.255.255.128
+First Usable IP: 192.168.10.1
+Last Usable IP: 192.168.10.126
+Broadcast Address: 192.168.10.127
+
+
+LAN 2
+Required Hosts: 50
+
+Network Address: 192.168.10.128/26
+Subnet Mask: 255.255.255.192
+First Usable IP: 192.168.10.129
+Last Usable IP: 192.168.10.190
+Broadcast Address: 192.168.10.191
+
+
+LAN 3
+Required Hosts: 25
+
+Network Address: 192.168.10.192/27
+Subnet Mask: 255.255.255.224
+First Usable IP: 192.168.10.193
+Last Usable IP: 192.168.10.222
+Broadcast Address: 192.168.10.223
+
+
+LAN 4
+Required Hosts: 10
+
+Network Address: 192.168.10.224/28
+Subnet Mask: 255.255.255.240
+First Usable IP: 192.168.10.225
+Last Usable IP: 192.168.10.238
+Broadcast Address: 192.168.10.239
+
+
+--------------------------------------------------------
+ROUTER CONFIGURATION
+--------------------------------------------------------
+
+enable
+configure terminal
+
+hostname R1
+
+! LAN 1
+interface gigabitEthernet 0/0
+ip address 192.168.10.1 255.255.255.128
+no shutdown
+exit
+
+! LAN 2
+interface gigabitEthernet 0/1
+ip address 192.168.10.129 255.255.255.192
+no shutdown
+exit
+
+! LAN 3
+interface gigabitEthernet 0/2
+ip address 192.168.10.193 255.255.255.224
+no shutdown
+exit
+
+end
+write memory
+
+
+--------------------------------------------------------
+HOST IP CONFIGURATION
+--------------------------------------------------------
+
+LAN 1:
+Network: 192.168.10.0/25
+Gateway: 192.168.10.1
+
+Example PC:
+IP Address: 192.168.10.10
+Subnet Mask: 255.255.255.128
+Default Gateway: 192.168.10.1
+
+
+LAN 2:
+Network: 192.168.10.128/26
+Gateway: 192.168.10.129
+
+Example PC:
+IP Address: 192.168.10.130
+Subnet Mask: 255.255.255.192
+Default Gateway: 192.168.10.129
+
+
+LAN 3:
+Network: 192.168.10.192/27
+Gateway: 192.168.10.193
+
+Example PC:
+IP Address: 192.168.10.194
+Subnet Mask: 255.255.255.224
+Default Gateway: 192.168.10.193
+
+
+LAN 4:
+Network: 192.168.10.224/28
+Gateway: 192.168.10.225
+
+Example PC:
+IP Address: 192.168.10.226
+Subnet Mask: 255.255.255.240
+Default Gateway: 192.168.10.225
+
+
+--------------------------------------------------------
+VERIFICATION COMMANDS
+--------------------------------------------------------
+
+show ip interface brief
+show ip route
+
+ping 192.168.10.129
+ping 192.168.10.193
+ping 192.168.10.226
+
+========================================================
+END OF EXPERIMENT 3
+========================================================
